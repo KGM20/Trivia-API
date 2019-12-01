@@ -51,7 +51,7 @@ def create_app(test_config=None):
 
     return jsonify({
       'success': True,
-      'books': current_categories
+      'categories': current_categories
     })
   '''
   @TODO: 
@@ -59,6 +59,8 @@ def create_app(test_config=None):
   including pagination (every 10 questions). 
   This endpoint should return a list of questions, 
   number of total questions, current category, categories. 
+
+
 
   TEST: At this point, when you start the application
   you should see questions and categories generated,
@@ -123,6 +125,21 @@ def create_app(test_config=None):
   Create error handlers for all expected errors 
   including 404 and 422. 
   '''
+  @app.errorhandler(404)
+  def not_found(error):
+        return jsonify({
+        'success': False,
+        'error': 404,
+        'message': 'Not found'
+      }), 404
+
+  @app.errorhandler(405)
+  def not_found(error):
+        return jsonify({
+        'success': False,
+        'error': 405,
+        'message': 'Method not allowed'
+      }), 405
   
   return app
 
