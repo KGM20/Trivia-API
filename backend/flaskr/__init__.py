@@ -67,7 +67,7 @@ def create_app(test_config=None):
     Clicking on the page numbers should update the questions. 
     '''
     @app.route('/questions')
-    def retrieve_books():
+    def retrieve_questions():
         selection = db.session.query(Question).order_by(Question.id).all()
         current_questions = paginate_questions(request, selection)
 
@@ -125,7 +125,7 @@ def create_app(test_config=None):
     of the questions list in the "List" tab.  
     '''
     @app.route('/questions', methods=['POST'])
-    def create_book():
+    def create_question():
         body = request.get_json()
 
         question = body.get('question', None)
