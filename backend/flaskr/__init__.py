@@ -82,7 +82,10 @@ def create_app(test_config=None):
       abort(404)
 
     # Waiting for the explanation of what to put on this parameter
-    current_category = 'Something'
+    current_category = {
+                         'id': 6,
+                         'type': 'Sports'
+                       }
 
     return jsonify({
       'success': True,
