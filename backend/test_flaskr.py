@@ -139,6 +139,23 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Not found')
 
+    def test_get_questions_by_category(self):
+        res = self.client().get('/categories/5/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['questions']))
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(data['current_category'])
+
+    def test_404_searching_question_by_category_that_does_not_exists(self):
+        res = self.client().get('/categories/1234567890/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Not found')
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

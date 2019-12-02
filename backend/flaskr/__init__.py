@@ -67,7 +67,7 @@ def create_app(test_config=None):
     Clicking on the page numbers should update the questions. 
     '''
     @app.route('/questions')
-    def retrieve_books():
+    def retrieve_questions():
         selection = db.session.query(Question).order_by(Question.id).all()
         current_questions = paginate_questions(request, selection)
 
@@ -125,7 +125,7 @@ def create_app(test_config=None):
     of the questions list in the "List" tab.  
     '''
     @app.route('/questions', methods=['POST'])
-    def create_book():
+    def create_question():
         body = request.get_json()
 
         question = body.get('question', None)
@@ -185,7 +185,23 @@ def create_app(test_config=None):
     categories in the left column will cause only questions of that 
     category to be shown. 
     '''
+    @app.route('/categories/<int:category_id>/questions')
+    def retrieve_questions_by_given_category(category_id):
+        questions = db.session.query(Question).filter(Question.category == category_id).all()
+        questions_by_category = paginate_questions(request, questions)
 
+        if len(questions) == 0:
+            abort(404)
+
+        # Waiting for the explanation of what to put on this parameter
+        current_category = db.session.query(Category).get(category_id).format()
+
+        return jsonify({
+            'success': True,
+            'questions': questions_by_category,
+            'total_questions': len(questions),
+            'current_category': current_category
+        })
 
     '''
     @TODO: 
