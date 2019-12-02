@@ -83,9 +83,9 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Not found')
 
-    #Everytime you test with this method, be sure to increment the current question id. Current 5 
+    #Everytime you test with this method, be sure to increment the current question id. Current 8 
     def test_delete_question(self):
-        res = self.client().delete('/questions/5')
+        res = self.client().delete('/questions/8')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -100,14 +100,14 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Not found')
 
     def test_create_new_question(self):
-        res = self.client().post('/question', json=self.new_question)
+        res = self.client().post('/questions', json=self.new_question)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
     def test_422_create_question_with_wrong_datatype(self):
-        res = self.client().post('/question', json=self.wrong_datatypes_question)
+        res = self.client().post('/questions', json=self.wrong_datatypes_question)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
