@@ -17,6 +17,7 @@ class Search extends Component {
   }
 
   render() {
+    console.log('I\'m Here!');
     return (
       <form onSubmit={this.getInfo}>
         <input
