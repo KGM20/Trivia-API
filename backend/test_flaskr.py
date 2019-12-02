@@ -91,9 +91,8 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Not found')
 
-    #Everytime you test with this method, be sure to increment the current question id. Current 9 
     def test_delete_question(self):
-        res = self.client().delete('/questions/9')
+        res = self.client().delete('/questions/10')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)

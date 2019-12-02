@@ -84,11 +84,11 @@ def create_app(test_config=None):
         current_category = {'id': 6, 'type': 'Sports'}
 
         return jsonify({
-          'success': True,
-          'questions': current_questions,
-          'total_questions': len(selection),
-          'categories': current_categories,
-          'current_category': current_category
+            'success': True,
+            'questions': current_questions,
+            'total_questions': len(selection),
+            'categories': current_categories,
+            'current_category': current_category
         })
     '''
     @TODO: 
@@ -135,11 +135,21 @@ def create_app(test_config=None):
         searchTerm = body.get('searchTerm', None)
 
         if searchTerm:
-            questions = db.session.query(Question).filter(Question.title.ilike('%'+title+'%')).all()
-            result_questions
+            questions = db.session.query(Question).filter(Question.question.ilike('%'+searchTerm+'%')).all()
+            search_questions = paginate_questions(request, questions)
 
             if len(questions) == 0:
                 abort(404)
+
+            # Waiting for the explanation of what to put on this parameter
+            current_category = {'id': 6, 'type': 'Sports'}
+
+            return jsonify({
+                'success': True,
+                'questions': search_questions,
+                'total_questions': len(questions),
+                'current_category': current_category
+            })
 
         else:
             if question is None or answer is None or difficulty is None or category is None:
@@ -149,9 +159,9 @@ def create_app(test_config=None):
                 question = Question(question=question, answer=answer, difficulty=difficulty, category=category)
                 question.insert()
 
-            return jsonify({
-              'success': True,
-            })
+                return jsonify({
+                    'success': True,
+                })
 
             except:
                 abort(422)
