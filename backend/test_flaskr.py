@@ -18,6 +18,20 @@ class TriviaTestCase(unittest.TestCase):
         self.database_path = "postgres://{}:{}@{}/{}".format('user1', 'letmein','localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
+        self.new_question = {
+            'question': 'Who was the producer for the famous videogames saga Metal Gear?',
+            'answer': 'Hideo Kojima',
+            'difficulty': 5,
+            'category': 5
+        }
+
+        self.wrong_datatypes_question = {
+            'question': 'Is this question going to be accepted on the database?',
+            'answer': 'No',
+            'difficulty': 1,
+            'category': 'Something that is not an integer'
+        }
+
         # binds the app to the current context
         with self.app.app_context():
             self.db = SQLAlchemy()
@@ -69,8 +83,9 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Not found')
 
+    #Everytime you test with this method, be sure to increment the current question id. Current 5 
     def test_delete_question(self):
-        res = self.client().delete('/questions/10')
+        res = self.client().delete('/questions/5')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -83,6 +98,21 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Not found')
+
+    def test_create_new_question(self):
+        res = self.client().post('/question', json=self.new_question)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_422_create_question_with_wrong_datatype(self):
+        res = self.client().post('/question', json=self.wrong_datatypes_question)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Unprocessable entity')
 
 
 # Make the tests conveniently executable
