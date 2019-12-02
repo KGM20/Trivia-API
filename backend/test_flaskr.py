@@ -32,6 +32,14 @@ class TriviaTestCase(unittest.TestCase):
             'category': 'Something that is not an integer'
         }
 
+        self.search_term = {
+            'searchTerm': 'Metal Gear'
+        }
+
+        self.search_term_that_does_not_exists = {
+            'searchTerm': '¿¬¬uwu|ñ'
+        }
+
         # binds the app to the current context
         with self.app.app_context():
             self.db = SQLAlchemy()
@@ -83,9 +91,9 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Not found')
 
-    #Everytime you test with this method, be sure to increment the current question id. Current 8 
+    #Everytime you test with this method, be sure to increment the current question id. Current 9 
     def test_delete_question(self):
-        res = self.client().delete('/questions/8')
+        res = self.client().delete('/questions/9')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -113,6 +121,24 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Unprocessable entity')
+
+    def test_search_questions(self):
+        res = self.client().post('/questions', json=self.search_term)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['questions']))
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(data['current_category'])
+
+    def test_404_searching_question_that_does_not_exists(self):
+        res = self.client().post('/questions', json=self.search_term_that_does_not_exists)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Not found')
 
 
 # Make the tests conveniently executable
