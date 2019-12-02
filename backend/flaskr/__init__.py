@@ -136,6 +136,9 @@ def create_app(test_config=None):
     difficulty = body.get('difficulty', None)
     category = body.get('category', None)
 
+    if question is None or answer is None or difficulty is None or category is None:
+      abort(400)
+
     try:
       question = Question(question=question, answer=answer, difficulty=difficulty, category=category)
       question.insert()
@@ -184,6 +187,14 @@ def create_app(test_config=None):
   Create error handlers for all expected errors 
   including 404 and 422. 
   '''
+  @app.errorhandler(400)
+  def not_found(error):
+        return jsonify({
+        'success': False,
+        'error': 400,
+        'message': 'Bad request'
+      }), 400
+
   @app.errorhandler(404)
   def not_found(error):
         return jsonify({
