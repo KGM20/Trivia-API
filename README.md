@@ -19,8 +19,6 @@ The backend code follows [PEP8 style guidelines](https://www.python.org/dev/peps
 
 ### Getting Setup
 
-> _tip_: this frontend is designed to work with [Flask-based Backend](../backend). It is recommended you stand up the backend first, test using Postman or curl, update the endpoints in the frontend, and then the frontend should integrate smoothly.
-
 #### Installing Dependencies
 
 ##### Installing Node and NPM
@@ -71,7 +69,7 @@ pip install -r requirements.txt
 
 This will install all of the required packages we selected within the `requirements.txt` file.
 
-###### Key Dependencies
+##### Key Dependencies
 
 - [Flask](http://flask.pocoo.org/)  is a lightweight backend microservices framework. Flask is required to handle requests and responses.
 
@@ -101,7 +99,7 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
 
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
 
-## Testing
+### Testing
 To run the tests, run
 ```
 dropdb trivia_test
