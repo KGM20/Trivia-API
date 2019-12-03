@@ -122,8 +122,7 @@ def create_app(test_config=None):
             })
 
         else:
-            if question is None or answer is None or difficulty is None \
-               or category is None:
+            if not question or not answer:
                 abort(400)
 
             try:
