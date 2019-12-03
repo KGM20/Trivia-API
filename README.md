@@ -332,7 +332,7 @@ The route will look for creating questions if there is no 'searchTerm' index on 
 
 - Creates a new question using the submitted questions, answer, category and difficulty. Returns a success value.
 - Request Arguments: A JSON object with question object structure (string:question, string:answer, integer:category and integer:difficulty)
-Sample: `curl -X POST http://127.0.0.1:5000/questions -H "Content-Type: application/json" -d '{"question": "2 + 2?", "answer": "4", "category": 1, "difficulty": 1}'`
+- Sample: `curl -X POST http://127.0.0.1:5000/questions -H "Content-Type: application/json" -d '{"question": "2 + 2?", "answer": "4", "category": 1, "difficulty": 1}'`
  ```
 {
   "success": true
@@ -396,3 +396,8 @@ Sample: `curl -X POST http://127.0.0.1:5000/questions -H "Content-Type: applicat
   "success": true
 }
 ```
+
+## Authors
+
+Frontend by Udacity Developers Team
+Backend by Kevin "KGM20" Cruz
