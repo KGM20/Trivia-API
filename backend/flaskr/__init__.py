@@ -62,15 +62,11 @@ def create_app(test_config=None):
         if len(current_categories) == 0:
             abort(404)
 
-        # Waiting for the explanation of what to put on this parameter
-        current_category = {'id': 6, 'type': 'Sports'}
-
         return jsonify({
             'success': True,
             'questions': current_questions,
             'total_questions': len(selection),
             'categories': current_categories,
-            'current_category': current_category
         })
 
 
@@ -111,14 +107,10 @@ def create_app(test_config=None):
             if len(questions) == 0:
                 abort(404)
 
-            # Waiting for the explanation of what to put on this parameter
-            current_category = {'id': 6, 'type': 'Sports'}
-
             return jsonify({
                 'success': True,
                 'questions': search_questions,
-                'total_questions': len(questions),
-                'current_category': current_category
+                'total_questions': len(questions)
             })
 
         else:
@@ -147,7 +139,6 @@ def create_app(test_config=None):
         if len(questions) == 0:
             abort(404)
 
-        # Waiting for the explanation of what to put on this parameter
         current_category = db.session.query(Category).get(category_id) \
                            .format()
 
