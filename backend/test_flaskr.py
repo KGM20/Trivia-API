@@ -173,7 +173,6 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['question'])
 
     def test_404_try_to_play_quiz_with_non_existing_category(self):
         res = self.client().post('/quizzes', json=self.quiz_questions_with_id_that_does_not_exist)
