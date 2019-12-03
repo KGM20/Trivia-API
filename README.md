@@ -156,7 +156,7 @@ The API handles the following error codes:
 
 - Returns a dictionary of category objects and a success argument.
 - Request Arguments: None.
-Sample: `curl http://127.0.0.1:5000/categories`
+- Sample: `curl http://127.0.0.1:5000/categories`
  ```
 {
 	'1' : "Science",
@@ -172,7 +172,7 @@ Sample: `curl http://127.0.0.1:5000/categories`
 
 - Returns a dictionary of category objects, a list of questions from all categories with a pagination by 10 questions, an integer with total of questions value and a success argument.
 - Request Arguments: Optional 'page' with integer value starting from 1, if not provided is 1 by default.
-Sample: `curl http://127.0.0.1:5000/questions?page=1`
+- Sample: `curl http://127.0.0.1:5000/questions?page=1`
  ```
 {
   "categories": [
@@ -282,7 +282,7 @@ Sample: `curl http://127.0.0.1:5000/questions?page=1`
 
 - Returns a list of questions from the category id provided on URL with a pagination by 10 questions, an integer with total of questions value, a dictionary with the current category object and a success argument.
 - Request Arguments: Optional 'page' with integer value starting from 1, if not provided is 1 by default.
-Sample: `curl http://127.0.0.1:5000/categories/3/questions?page=1`
+- Sample: `curl http://127.0.0.1:5000/categories/3/questions?page=1`
  ```
 {
   "current_category": {
@@ -343,7 +343,7 @@ Sample: `curl -X POST http://127.0.0.1:5000/questions -H "Content-Type: applicat
 
 - Returns a list of questions that match (case-insensitive and partial string) the search term on the question string with a pagination by 10 questions, an integer with total of questions value and a success argument.
 - Request Arguments: A JSON object with 'searchTerm' index with string value. Optional 'page' with integer value starting from 1, if not provided is 1 by default.
-Sample: `curl -X POST http://127.0.0.1:5000/questions -H "Content-Type: application/json" -d '{"searchTerm": "title"}'`
+- Sample: `curl -X POST http://127.0.0.1:5000/questions -H "Content-Type: application/json" -d '{"searchTerm": "title"}'`
  ```
 {
   "questions": [
@@ -372,7 +372,7 @@ Sample: `curl -X POST http://127.0.0.1:5000/questions -H "Content-Type: applicat
 
 - Returns a question object from the category provided on the arguments, if not category provided, the returned question will be any category, the question will be randomly selected and it cannot repeat from the ones on the list of previous questions argument, if there are no questions left that can be selected, then returns a question argument with False value.
 - Request Arguments: A JSON object with the previous questions list and a type dictionary with a category object.
-Sample: `curl -X POST http://127.0.0.1:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [], "quiz_category": {"type": {"id": 2, "type": "Art"}}}'`
+- Sample: `curl -X POST http://127.0.0.1:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [], "quiz_category": {"type": {"id": 2, "type": "Art"}}}'`
 ```
 {
   "question": {
@@ -390,7 +390,7 @@ Sample: `curl -X POST http://127.0.0.1:5000/quizzes -H "Content-Type: applicatio
 
 - Deletes a question that matches the given id on the URL. Returns a success value.
 - Request Arguments: None
-Sample: `curl -X DELETE http://127.0.0.1:5000/questions/13`
+- Sample: `curl -X DELETE http://127.0.0.1:5000/questions/13`
  ```
 {
   "success": true
