@@ -108,3 +108,37 @@ psql trivia_test < trivia.psql
 python test_flaskr.py
 ```
 
+## API Reference
+
+###Base URL
+
+This API runs on your local computer, using the server provided by Flask framework, which the default port to work is the 5000.
+```
+http://localhost:5000
+      or
+http://127.0.0.1:5000
+```
+If you have configured your Flask to run on another port, then you change the '5000' for the port you selected to work on.
+
+###Error Handling
+
+####Response Codes
+
+All the errors are returned in JSON format with the following structure:
+```
+{
+	'success': False,
+	'error': 422,
+	'message': 'unprocessable entity'
+}
+```
+
+####Error types
+
+The API handles the following error codes:
+  
+- 400: Bad Request
+- 404: Not Found
+- 405: Method Not Allowed
+- 422: Unprocessable entity
+- 500: Internal server error
