@@ -15,7 +15,7 @@ class TriviaTestCase(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client
         self.database_name = "trivia_test"
-        self.database_path = "postgres://{}:{}@{}/{}".format('user1', 'letmein','localhost:5432', self.database_name)
+        self.database_path = "postgres://{}:{}@{}/{}".format('user1', 'letmein', 'localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
         self.new_question = {
@@ -36,8 +36,18 @@ class TriviaTestCase(unittest.TestCase):
             'searchTerm': 'Metal Gear'
         }
 
-        self.search_term_that_does_not_exists = {
+        self.search_term_that_does_not_exist = {
             'searchTerm': '¿¬¬uwu|ñ'
+        }
+
+        self.quiz_questions = {
+            'previous_questions': [16, 19, 17],
+            'quiz_category': {"type": {"id": 2, "type": "Art"}, "id": "1"}
+        }
+
+        self.quiz_questions_with_id_that_does_not_exist = {
+            'previous_questions': [16, 19, 17],
+            'quiz_category': {"type": {"id": 1234567890, "type": "Art"}, "id": "1235467890"}
         }
 
         # binds the app to the current context
@@ -131,8 +141,8 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['total_questions'])
         self.assertTrue(data['current_category'])
 
-    def test_404_searching_question_that_does_not_exists(self):
-        res = self.client().post('/questions', json=self.search_term_that_does_not_exists)
+    def test_404_searching_question_that_does_not_exist(self):
+        res = self.client().post('/questions', json=self.search_term_that_does_not_exist)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -149,8 +159,23 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['total_questions'])
         self.assertTrue(data['current_category'])
 
-    def test_404_searching_question_by_category_that_does_not_exists(self):
+    def test_404_searching_question_by_category_that_does_not_exist(self):
         res = self.client().get('/categories/1234567890/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Not found')
+
+    def test_get_questions_to_play_quiz(self):
+        res = self.client().post('/quizzes', json=self.quiz_questions)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_404_try_to_play_quiz_with_non_existing_category(self):
+        res = self.client().post('/quizzes', json=self.quiz_questions_with_id_that_does_not_exist)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
