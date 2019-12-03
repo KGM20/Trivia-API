@@ -399,5 +399,5 @@ The route will look for creating questions if there is no 'searchTerm' index on 
 
 ## Authors
 
-Frontend by Udacity Developers Team
-Backend by Kevin "KGM20" Cruz
+- Frontend by Udacity Developers Team
+- Backend by Kevin "KGM20" Cruz
