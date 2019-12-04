@@ -9,9 +9,10 @@ from models import setup_db, db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
+
 def paginate_questions(request, selection):
     page = request.args.get('page', 1, type=int)
-    start =  (page - 1) * QUESTIONS_PER_PAGE
+    start = (page - 1) * QUESTIONS_PER_PAGE
     end = start + QUESTIONS_PER_PAGE
 
     questions = [question.format() for question in selection]
@@ -19,20 +20,19 @@ def paginate_questions(request, selection):
 
     return current_questions
 
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
     setup_db(app)
 
-
     @app.after_request
     def after_request(response):
         response.headers.add('Access-Control-Allow-Headers',
                              'Content-Type,Authorization,true')
-        response.headers.add('Access-Control-Allow-Methods', 
+        response.headers.add('Access-Control-Allow-Methods',
                              'GET,PUT,POST,DELETE,OPTIONS')
         return response
-
 
     @app.route('/categories')
     def retrieve_categories():
@@ -46,7 +46,6 @@ def create_app(test_config=None):
             'success': True,
             'categories': current_categories
         })
-
 
     @app.route('/questions')
     def retrieve_questions():
@@ -69,14 +68,13 @@ def create_app(test_config=None):
             'categories': current_categories,
         })
 
-
     @app.route('/questions/<int:question_id>', methods=['DELETE'])
     def delete_a_question(question_id):
         question = db.session.query(Question).get(question_id)
 
         if question is None:
             abort(404)
-          
+
         try:
             question.delete()
 
@@ -86,7 +84,6 @@ def create_app(test_config=None):
 
         except:
             abort(422)
-
 
     @app.route('/questions', methods=['POST'])
     def create_question():
@@ -129,18 +126,17 @@ def create_app(test_config=None):
             except:
                 abort(422)
 
-
     @app.route('/categories/<int:category_id>/questions')
     def retrieve_questions_by_given_category(category_id):
-        questions = db.session.query(Question).filter(Question.category
-                    == category_id).all()
+        questions = db.session.query(Question).filter(Question.category ==
+                                                      category_id).all()
         questions_by_category = paginate_questions(request, questions)
 
         if len(questions) == 0:
             abort(404)
 
         current_category = db.session.query(Category).get(category_id) \
-                           .format()
+                                                     .format()
 
         return jsonify({
             'success': True,
@@ -148,7 +144,6 @@ def create_app(test_config=None):
             'total_questions': len(questions),
             'current_category': current_category
         })
-
 
     @app.route('/quizzes', methods=['POST'])
     def play_quiz():
@@ -161,8 +156,8 @@ def create_app(test_config=None):
             current_category = 0
         else:
             current_category = quiz_category['type']['id']
-        
-        #Check if category exists, 0 means all categories, so it's acceptable
+
+        # Check if category exists, 0 means all categories, so it's acceptable
         if current_category != 0:
             check_category = db.session.query(Category).get(current_category)
             if check_category is None:
@@ -181,7 +176,7 @@ def create_app(test_config=None):
         """
         if len(previous_questions) == len(questions_ids):
             random_question = False
-    
+
         else:
             new_question = False
             while not new_question:
@@ -190,13 +185,12 @@ def create_app(test_config=None):
                     new_question = True
 
             random_question = db.session.query(Question).get(random_question) \
-                              .format()
+                                                        .format()
 
         return jsonify({
             'success': True,
             'question': random_question
         })
-
 
     @app.errorhandler(400)
     def not_found(error):
@@ -239,5 +233,3 @@ def create_app(test_config=None):
         }), 500
 
     return app
-
-    
