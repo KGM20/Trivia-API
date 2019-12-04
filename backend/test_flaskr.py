@@ -15,18 +15,23 @@ class TriviaTestCase(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client
         self.database_name = "trivia_test"
-        self.database_path = "postgres://{}:{}@{}/{}".format('user1', 'letmein', 'localhost:5432', self.database_name)
+        self.database_path = "postgres://{}:{}@{}/{}".format('user1',
+                                                             'letmein',
+                                                             'localhost:5432',
+                                                             self
+                                                             .database_name)
         setup_db(self.app, self.database_path)
 
         self.new_question = {
-            'question': 'Who was the producer for the famous videogames saga Metal Gear?',
+            'question': 'Who was the producer for the \
+                        famous videogames saga Metal Gear?',
             'answer': 'Hideo Kojima',
             'difficulty': 5,
             'category': 5
         }
 
         self.wrong_datatypes_question = {
-            'question': 'Is this question going to be accepted on the database?',
+            'question': 'Is this question going to be accepted?',
             'answer': 'No',
             'difficulty': 1,
             'category': 'Something that is not an integer'
@@ -47,7 +52,12 @@ class TriviaTestCase(unittest.TestCase):
 
         self.quiz_questions_with_id_that_does_not_exist = {
             'previous_questions': [16, 19, 17],
-            'quiz_category': {"type": {"id": 1234567890, "type": "Art"}, "id": "1235467890"}
+            'quiz_category': {
+                                "type": {
+                                    "id": 1234567890,
+                                    "type": "Art"
+                                },
+                                "id": "1235467890"}
         }
 
         # binds the app to the current context
@@ -56,14 +66,15 @@ class TriviaTestCase(unittest.TestCase):
             self.db.init_app(self.app)
             # create all tables
             self.db.create_all()
-    
+
     def tearDown(self):
         """Executed after each test"""
         pass
 
     """
     TODO
-    Write at least one test for each test for successful operation and for expected errors.
+    Write at least one test for each test for successful operation and for
+    expected errors.
     """
 
     def test_get_categories(self):
@@ -123,7 +134,8 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
 
     def test_422_create_question_with_wrong_datatype(self):
-        res = self.client().post('/questions', json=self.wrong_datatypes_question)
+        res = self.client().post('/questions',
+                                 json=self.wrong_datatypes_question)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
@@ -140,7 +152,8 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['total_questions'])
 
     def test_404_searching_question_that_does_not_exist(self):
-        res = self.client().post('/questions', json=self.search_term_that_does_not_exist)
+        res = self.client().post('/questions',
+                                 json=self.search_term_that_does_not_exist)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -173,7 +186,9 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
 
     def test_404_try_to_play_quiz_with_non_existing_category(self):
-        res = self.client().post('/quizzes', json=self.quiz_questions_with_id_that_does_not_exist)
+        res = self.client().post('/quizzes',
+                                 json=self
+                                 .quiz_questions_with_id_that_does_not_exist)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
