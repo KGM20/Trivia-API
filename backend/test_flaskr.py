@@ -91,7 +91,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data['questions']))
         self.assertTrue(data['total_questions'])
         self.assertTrue(len(data['categories']))
-        self.assertTrue(data['current_category'])
 
     def test_404_requesting_questions_beyond_valid_page(self):
         res = self.client().get('/questions?page=1234567890')
@@ -139,7 +138,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['questions']))
         self.assertTrue(data['total_questions'])
-        self.assertTrue(data['current_category'])
 
     def test_404_searching_question_that_does_not_exist(self):
         res = self.client().post('/questions', json=self.search_term_that_does_not_exist)
